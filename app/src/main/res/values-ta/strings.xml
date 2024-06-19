@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">வகுப்பு1</string>
+    <string name="hintname">உங்கள் பெயரை உள்ளிடவும்</string>
+    <string name="hintpin">உங்கள் PINஐ உள்ளிடவும்</string>
+    <string name="happy_birthday">Hello</string>
+</resources>
