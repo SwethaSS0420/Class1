@@ -1,66 +1,31 @@
 package com.example.class1
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.class1.network.MarsAdapter
-import com.example.class1.network.MarsApi
-import com.example.class1.network.MarsPhoto
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.example.class1.network.CustomAdapter
+import com.example.class1.network.Item
 
-class HomeActivity : AppCompatActivity(){
-    var TAG = HomeActivity::class.java.simpleName    //"HomeActivity"
+class HomeActivity : AppCompatActivity() {
 
-    lateinit var marsRecyclerView:RecyclerView
-    lateinit var marsAdapter: MarsAdapter
-    lateinit var photos:List<MarsPhoto>
-    lateinit var imageView: ImageView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var customAdapter: CustomAdapter
+    private lateinit var itemList: MutableList<Item>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
-        imageView = findViewById(R.id.imageView)
-        marsRecyclerView = findViewById(R.id.recyclerViewUrls)
-        marsRecyclerView.layoutManager = LinearLayoutManager(this)
-        photos = ArrayList()
-        marsAdapter = MarsAdapter(photos)
-        marsRecyclerView.adapter = marsAdapter
+        setContentView(R.layout.activity_main)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        recyclerView = findViewById(R.id.recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
+        itemList = mutableListOf()
+        // Add sample data
+        itemList.add(Item("https://th.bing.com/th/id/R.3d88a927f8529dcba03364b09d98adbe?rik=JYmQaMVSULpYQg&riu=http%3a%2f%2fthewowstyle.com%2fwp-content%2fuploads%2f2015%2f01%2fnature-images.jpg&ehk=BNPsuSOUR7ATZ3EpRwxx1xFl7LUbO3tYlu1wFLCBrCE%3d&risl=&pid=ImgRaw&r=0", false))
+        itemList.add(Item("https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?cs=srgb&dl=daylight-environment-forest-459225.jpg&fm=jpg", true))
+        // Add more items as needed
 
+        customAdapter = CustomAdapter(this, itemList)
+        recyclerView.adapter = customAdapter
     }
-
-
-    private fun getMarsPhotos() {
-        GlobalScope.launch(Dispatchers.Main) {
-            //launching coroutines on the main thread is not advisable
-            var listMarsPhotos =   MarsApi.retrofitService.getPhotos()
-            // photos = listMarsPhotos
-            marsAdapter.listMarsPhotos = listMarsPhotos
-            marsAdapter.notifyDataSetChanged()
-            //   var tvHome:TextView = findViewById(R.id.tvHome)
-//            tvHome.setText(listMarsPhotos.get(1).imgSrc)
-            Log.i("homeactiviy",listMarsPhotos.size.toString())
-            Log.i("homeactivity-url",listMarsPhotos.get(1).imgSrc)
-
-
-        }
-    }
-
-    fun getJson(view: View) {
-        getMarsPhotos()
-    }
-
 }
