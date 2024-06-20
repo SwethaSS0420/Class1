@@ -1,5 +1,4 @@
 package com.example.class1;
-
 import junit.framework.TestCase;
 
 public class CalculatorTest extends TestCase {
@@ -21,6 +20,13 @@ public class CalculatorTest extends TestCase {
     {
         int expected=30;
         int actual=cal.mul(6,5);
+        assertEquals(expected,actual);
+    }
+
+    public void testDiv()
+    {
+        int expected=2;
+        int actual=cal.mul(6,3);
         assertEquals(expected,actual);
     }
 }
