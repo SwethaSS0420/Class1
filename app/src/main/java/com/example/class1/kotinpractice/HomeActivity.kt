@@ -1,31 +1,56 @@
 package com.example.class1
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.class1.network.CustomAdapter
-import com.example.class1.network.Item
+import com.example.class1.network.PhotoAdapter
+import com.example.class1.network.RetrofitInstance
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var customAdapter: CustomAdapter
-    private lateinit var itemList: MutableList<Item>
+    private lateinit var photoAdapter: PhotoAdapter
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         recyclerView = findViewById(R.id.recycler_view)
+        progressBar = findViewById(R.id.progress_bar)
+
         recyclerView.layoutManager = LinearLayoutManager(this)
+        photoAdapter = PhotoAdapter(this, listOf())
+        recyclerView.adapter = photoAdapter
 
-        itemList = mutableListOf()
-        // Add sample data
-        itemList.add(Item("https://th.bing.com/th/id/R.3d88a927f8529dcba03364b09d98adbe?rik=JYmQaMVSULpYQg&riu=http%3a%2f%2fthewowstyle.com%2fwp-content%2fuploads%2f2015%2f01%2fnature-images.jpg&ehk=BNPsuSOUR7ATZ3EpRwxx1xFl7LUbO3tYlu1wFLCBrCE%3d&risl=&pid=ImgRaw&r=0", false))
-        itemList.add(Item("https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?cs=srgb&dl=daylight-environment-forest-459225.jpg&fm=jpg", true))
-        // Add more items as needed
+        fetchPhotos()
+    }
 
-        customAdapter = CustomAdapter(this, itemList)
-        recyclerView.adapter = customAdapter
+    private fun fetchPhotos() {
+        progressBar.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+
+        lifecycleScope.launch {
+            try {
+                val photos = RetrofitInstance.api.getPhotos()
+                photoAdapter.updatePhotos(photos)
+                progressBar.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
+            } catch (e: IOException) {
+                progressBar.visibility = View.GONE
+                Toast.makeText(this@HomeActivity, "Network error: ${e.message}", Toast.LENGTH_SHORT).show()
+            } catch (e: HttpException) {
+                progressBar.visibility = View.GONE
+                Toast.makeText(this@HomeActivity, "Server error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
+
