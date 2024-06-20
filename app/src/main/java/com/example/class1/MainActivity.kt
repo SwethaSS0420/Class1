@@ -9,7 +9,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //inflate this xml
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.bdaycard)
         Log.i(TAG,"activity is getting created")
 
     }
