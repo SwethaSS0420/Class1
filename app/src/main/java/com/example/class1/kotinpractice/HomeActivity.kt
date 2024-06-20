@@ -1,8 +1,8 @@
 package com.example.class1
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageView
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.class1.network.MarsAdapter
 import com.example.class1.network.MarsApi
 import com.example.class1.network.MarsPhoto
-import coil.load
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -50,8 +49,6 @@ class HomeActivity : AppCompatActivity(){
             var listMarsPhotos =   MarsApi.retrofitService.getPhotos()
             // photos = listMarsPhotos
             marsAdapter.listMarsPhotos = listMarsPhotos
-            //import coil.load
-            imageView.load(listMarsPhotos.get(0).imgSrc)
             marsAdapter.notifyDataSetChanged()
             //   var tvHome:TextView = findViewById(R.id.tvHome)
 //            tvHome.setText(listMarsPhotos.get(1).imgSrc)
