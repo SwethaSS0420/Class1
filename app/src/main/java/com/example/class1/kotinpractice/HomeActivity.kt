@@ -1,6 +1,7 @@
 package com.example.class1
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.class1.network.MarsAdapter
 import com.example.class1.network.MarsApi
 import com.example.class1.network.MarsPhoto
+import coil.load
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -20,10 +22,12 @@ class HomeActivity : AppCompatActivity(){
     lateinit var marsRecyclerView:RecyclerView
     lateinit var marsAdapter: MarsAdapter
     lateinit var photos:List<MarsPhoto>
+    lateinit var imageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        imageView = findViewById(R.id.imageView)
         marsRecyclerView = findViewById(R.id.recyclerViewUrls)
         marsRecyclerView.layoutManager = LinearLayoutManager(this)
         photos = ArrayList()
@@ -46,6 +50,8 @@ class HomeActivity : AppCompatActivity(){
             var listMarsPhotos =   MarsApi.retrofitService.getPhotos()
             // photos = listMarsPhotos
             marsAdapter.listMarsPhotos = listMarsPhotos
+            //import coil.load
+            imageView.load(listMarsPhotos.get(0).imgSrc)
             marsAdapter.notifyDataSetChanged()
             //   var tvHome:TextView = findViewById(R.id.tvHome)
 //            tvHome.setText(listMarsPhotos.get(1).imgSrc)
