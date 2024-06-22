@@ -2,13 +2,14 @@ package com.example.class1.database
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 @Dao
 interface ItemDao {
 
-    @Insert
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(groceryItem: Item)
 
     @Update
@@ -17,8 +18,8 @@ interface ItemDao {
     @Delete
     suspend fun delete(item: Item)
 
-    @Query("SELECT * from item WHERE id = :id")
-    fun getItem(id: Int): Flow<Item>
+    @Query("SELECT * from item WHERE id = :itemId")
+    fun getItem(itemId: Int): Flow<Item>
 
     @Query("SELECT * from item ORDER BY name ASC")
     fun getItems(): Flow<List<Item>>
