@@ -3,6 +3,7 @@ package com.example.class1
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.class1.database.HomeViewModel
 import com.example.class1.database.Item
 import com.example.class1.database.ItemDao
 import com.example.class1.database.ItemRoomDatabase
@@ -11,14 +12,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import com.example.class1.database.HomeViewModel
 
 class HomeActivity : AppCompatActivity() {
     var TAG = HomeActivity::class.java.simpleName    //"HomeActivity"
     private lateinit var binding: ActivityHomeBinding
     lateinit var dao: ItemDao
     lateinit var viewModel: HomeViewModel
-    var count = 0
+    //var count = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -27,7 +27,8 @@ class HomeActivity : AppCompatActivity() {
         var  database = ItemRoomDatabase.getDatabase(this)
         dao = database.itemDao()
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
-        binding.tvHome.setText(""+count)
+        //binding.tvHome.setText(""+count)
+        binding.tvHome.setText(""+viewModel.count)
         binding.btnDbInsert.setOnClickListener{
             insertDataDb()
         }
@@ -35,10 +36,12 @@ class HomeActivity : AppCompatActivity() {
             findItemDb(21)
         }
         binding.btnInc.setOnClickListener{
-            count++
-            //viewModel.incrementCount()
-            binding.tvHome.setText(""+count)
-            //+viewModel.count)
+//            count++
+//            viewModel.incrementCount()
+//            binding.tvHome.setText(""+count)
+//            +viewModel.count)
+            viewModel.incrementCount()
+            binding.tvHome.setText(""+viewModel.count)
         }
     }
 
