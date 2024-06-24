@@ -3,4 +3,8 @@
     <string name="hintname">enter your name</string>
     <string name="hintpin">Enter your pin</string>
     <string name="happy_birthday">Have a nice day!!</string>
+    <string name="add_word" translatable="false">add</string>
+    <string name="hint_word" translatable="false">Word...</string>
+    <string name="button_save" translatable="false">Save</string>
+    <string name="empty_not_saved" translatable="false">Word not saved because it is empty.</string>
 </resources>
